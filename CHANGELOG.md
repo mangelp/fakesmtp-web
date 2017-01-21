@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## Unreleased
 ### Added
 
 ### Changed
@@ -20,5 +20,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - FakeSMTP is used as the Fake SMTP server (hence the name of this project).
 - Simple MVC implementation that routes requests and dispatches static resources and actions.
 
-[Unreleased]: https://github.com/mangelp/fakeSmtpWeb/compare/v0.2.0...HEAD
-[0.0.2]: https://github.com/mangelp/fakeSmtpWeb/compare/v0.0.1...v0.0.2
