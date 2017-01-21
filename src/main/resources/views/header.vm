@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>FakeSMTP WEB</title>
+		<link type="text/css" rel="stylesheet" href="/res/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="/res/style.css">
+	</head>
+	<body>
+		<div class="body">
+			<div class="jumbotron text-center header">
+			  <h1>FakeSMTP Web Interface</h1>
+			  <p>Showing test emails from $mailFolder</p>
+			</div>
+			<div class="container">

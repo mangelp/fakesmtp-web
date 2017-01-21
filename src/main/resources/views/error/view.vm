@@ -1,0 +1,7 @@
+#parse("views/header.vm")
+
+<div class="body">
+FakeSTMP WEB
+</div>
+
+#parse("views/footer.vm")

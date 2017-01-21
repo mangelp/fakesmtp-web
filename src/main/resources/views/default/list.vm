@@ -1,0 +1,53 @@
+#parse("views/header.vm")
+
+<div class="row">
+	<div class="col-sm-12">
+		<h2>Message list</h2>
+		<div class="container messages">
+			<div class="row">
+				<div class="col-sm-12">
+				#if($mails.isEmpty())
+					<p>No mails found</p>
+				#else
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<th>File</th>
+								<th>Fecha</th>
+								<th>Tamaño</th>
+								<th>Subject</th>
+								<th>From</th>
+								<th>Addresses</th>
+								<th>Content</th>
+								<th>Action</th>
+							</thead>
+							<tbody>
+							#foreach($mail in $mails)
+								<tr>
+									<td>${mail.File.Name}</td>
+									<td>${mail.getCreationDate("yyyy/MM/dd HH:mm:ss")}</td>
+									<td>${mail.getSize("k")}</td>
+									<td>${mail.Subject}</td>
+									<td>${mail.From}</td>
+									<td>
+										<ul>
+											<li><strong>TO</strong><span>${mail.getEmailAddressesAsString("to")}</span></li>
+											<li><strong>CC</strong><span>${mail.getEmailAddressesAsString("cc")}</span></li>
+											<li><strong>BCC</strong><span>${mail.getEmailAddressesAsString("bcc")}</span></li>
+										</ul>
+									</td>
+									<td>${mail.getExcerpt(180)}</td>
+									<td><a href="/default/view/${mail.FileName}">Ver</a></td>
+								</tr>
+							#end
+							<tbody>
+						</table>
+					</div>
+				#end
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+#parse("views/footer.vm")
