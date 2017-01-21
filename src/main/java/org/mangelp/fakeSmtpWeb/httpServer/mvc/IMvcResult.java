@@ -5,7 +5,15 @@
  */
 package org.mangelp.fakeSmtpWeb.httpServer.mvc;
 
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.Resource;
+
+/**
+ * 
+ * @author mangelp
+ *
+ */
 public interface IMvcResult {
+	
 	public boolean isSuccess();
 
 	public void setSuccess(boolean success);
@@ -17,4 +25,8 @@ public interface IMvcResult {
 	public String getErrorMsg();
 
 	public void setErrorMsg(String errorMsg);
+	
+	public MvcResultTypes getType();
+	
+	public Resource getResource();
 }

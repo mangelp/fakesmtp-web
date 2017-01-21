@@ -9,10 +9,14 @@ import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang.StringUtils;
 import org.mangelp.fakeSmtpWeb.FakeSmtpWeb;
+import org.mangelp.fakeSmtpWeb.httpServer.mailBrowser.MailAttachment;
 import org.mangelp.fakeSmtpWeb.httpServer.mailBrowser.MailBrowser;
 import org.mangelp.fakeSmtpWeb.httpServer.mailBrowser.MailFile;
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.MvcErrors;
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.MvcResultTypes;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.action.ActionInput;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.action.ActionResult;
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.Resource;
 
 public class DefaultActionHandler extends AbstractActionHandler {
 	public DefaultActionHandler() {
@@ -26,6 +30,11 @@ public class DefaultActionHandler extends AbstractActionHandler {
 		if (subPath == null || subPath.length == 0) {
 			return;
 		}
+		
+		// Process subpaths to extract args from it. 
+		// IE: /default/view/12i218/name/bleh extracts:
+		//   id => 12i218
+		//   name => bleh
 
 		input.setParam("id", subPath[0]);
 
@@ -67,5 +76,26 @@ public class DefaultActionHandler extends AbstractActionHandler {
 		result.getViewContext().put("mails", mailBrowser.getMails());
 
 		result.setViewName("list");
+	}
+	
+	public void doDownloadAction(ActionInput input, ActionResult result) {
+		String mailFolder = FakeSmtpWeb.getConfig().getMailFolder();
+		MailBrowser mailBrowser = new MailBrowser(mailFolder);
+
+		String id = input.getParam("id");
+		String attachmentId = input.getParam("attachmentId");
+
+		if (StringUtils.isBlank(id) || StringUtils.isBlank(attachmentId)) {
+			result.setError(MvcErrors.INVALID_PARAMS);
+			result.setErrorMsg("Invalid parameters");
+			return;
+		}
+		
+		MailFile mail = mailBrowser.getMail(id);
+		int index = Integer.parseInt(attachmentId);
+		MailAttachment attachment = mail.getAttachments().get(index);
+		
+		result.setResource(new Resource(attachment.getContentType(), attachment.getInputStream()));
+		result.setType(MvcResultTypes.RESOURCE);
 	}
 }

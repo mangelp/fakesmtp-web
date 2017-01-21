@@ -15,6 +15,10 @@ public enum Actions {
 	 */
 	LIST,
 	/**
+	 * Download content
+	 */
+	DOWNLOAD,
+	/**
 	 * Default controller action (view or list).
 	 */
 	DEFAULT

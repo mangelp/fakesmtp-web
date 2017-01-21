@@ -16,7 +16,7 @@ import org.mangelp.fakeSmtpWeb.httpServer.mvc.controller.ActionHandlerException;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.controller.ActionHandlers;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.controller.DefaultActionHandler;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.ErrorResult;
-import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.ResourceResult;
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.BundledResourceResult;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +69,7 @@ public class Dispatcher {
 		return false;
 	}
 
-	private ResourceResult dispatchResource(HttpGetRequest request) {
+	private BundledResourceResult dispatchResource(HttpGetRequest request) {
 
 		String uri = request.getRequestUri();
 
@@ -78,7 +78,7 @@ public class Dispatcher {
 		String resourcePath = Resources.getPath(uri);
 		String mime = Resources.getMime(uri);
 
-		ResourceResult result = new ResourceResult(resourcePath, mime);
+		BundledResourceResult result = new BundledResourceResult(resourcePath, mime);
 
 		if (resourcePath == null || mime == null) {
 			Dispatcher.logger.debug("Resource not found: " + uri);

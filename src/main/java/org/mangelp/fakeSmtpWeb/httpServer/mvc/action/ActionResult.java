@@ -8,9 +8,11 @@ package org.mangelp.fakeSmtpWeb.httpServer.mvc.action;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.MvcResultTypes;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.IMvcResult;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.MvcErrors;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.controller.AbstractActionHandler;
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.Resource;
 
 public class ActionResult implements IMvcResult {
 	/**
@@ -32,7 +34,9 @@ public class ActionResult implements IMvcResult {
 	private Map<String, Object> viewContext = null;
 	private String viewName;
 	private ActionInput actionInput;
-	private AbstractActionHandler actionHandler;
+	private AbstractActionHandler actionHandler; 
+	private MvcResultTypes type;
+	private Resource resource;
 
 	public boolean isSuccess() {
 		return this.success;
@@ -89,8 +93,25 @@ public class ActionResult implements IMvcResult {
 	public void setActionHandler(AbstractActionHandler actionHandler) {
 		this.actionHandler = actionHandler;
 	}
+	
+	public MvcResultTypes getType() {
+		return type;
+	}
+	
+	public void setType(MvcResultTypes type) {
+		this.type = type;
+	}
+	
+	public Resource getResource() {
+		return this.resource;
+	}
+	
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
 
 	public ActionResult(String viewName, ActionInput input, AbstractActionHandler actionHandler) {
+		this.setType(MvcResultTypes.VIEW);
 		this.setViewName(viewName);
 		this.setSuccess(true);
 		this.setActionInput(input);

@@ -29,10 +29,13 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.functors.WhileClosure;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.util.MimeMessageParser;
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper around a MIME-mail file that is parsed from a real on-disk file when
@@ -42,6 +45,8 @@ import org.jsoup.Jsoup;
  *
  */
 public class MailFile {
+
+	private static final Logger logger = LoggerFactory.getLogger(MailFile.class);
 
 	private Date creationDate;
 	private long size;
@@ -57,7 +62,7 @@ public class MailFile {
 	private String[] to = ArrayUtils.EMPTY_STRING_ARRAY;
 	private String[] cc = ArrayUtils.EMPTY_STRING_ARRAY;
 	private String[] bcc = ArrayUtils.EMPTY_STRING_ARRAY;
-	private List<DataSource> attachments = new ArrayList<DataSource>();
+	private List<MailAttachment> attachments = new ArrayList<MailAttachment>();
 
 	/**
 	 * @return the creationDate
@@ -204,25 +209,11 @@ public class MailFile {
 		this.bcc = bcc;
 	}
 
-	/**
-	 * @return the attachment titles
-	 */
-	public String[] getAttachmentTitles() {
-		String[] titles = new String[this.attachments.size()];
-
-		for (int i = 0; i < titles.length; i++) {
-			DataSource attachmentData = this.attachments.get(i);
-			titles[i] = attachmentData.getName() + ", " + attachmentData.getContentType();
-		}
-
-		return titles;
-	}
-
-	public List<DataSource> getAttachments() {
+	public List<MailAttachment> getAttachments() {
 		return this.attachments;
 	}
 
-	protected void setAttachments(List<DataSource> attachments) {
+	protected void setAttachments(List<MailAttachment> attachments) {
 		this.attachments = attachments;
 	}
 
@@ -331,10 +322,11 @@ public class MailFile {
 			this.setBcc(bccList.toArray(this.getBcc()));
 
 			if (mimeParser.hasAttachments()) {
-				ArrayList<String> attachments = new ArrayList<String>(mimeParser.getAttachmentList().size());
+				attachments = new ArrayList<MailAttachment>(mimeParser.getAttachmentList().size());
 
+				int index = 0;
 				for (DataSource ds : mimeParser.getAttachmentList()) {
-					attachments.add(ds.getName() + " " + ds.getContentType());
+					attachments.add(new MailAttachment(++index, ds));
 				}
 			}
 
@@ -403,17 +395,21 @@ public class MailFile {
 	 * @return
 	 */
 	public String getSize(char units) {
+		return this.getSizeInUnits(this.size, units);
+	}
+
+	protected String getSizeInUnits(long size, char units) {
 		if (StringUtils.isBlank(units + "")) {
 			return this.size + " b";
 		}
 
 		switch (Character.toLowerCase(units)) {
 		case 'k':
-			return (Math.round(((float) this.size) / 1024)) + " KB";
+			return (Math.round(((float) size) / 1024)) + " KB";
 		case 'm':
-			return (Math.round(((float) this.size) / (1024 * 1024))) + " MB";
+			return (Math.round(((float) size) / (1024 * 1024))) + " MB";
 		case 'b':
-			return this.size + " B";
+			return size + " B";
 		default:
 			throw new IllegalArgumentException("Invalid units: " + units + ". Valid units are: k, m, b");
 		}
@@ -474,5 +470,44 @@ public class MailFile {
 		}
 
 		return content;
+	}
+
+	/**
+	 * Gets the size of an attachment in bytes
+	 * 
+	 * This operation requires the attachment to be read in order to be able to
+	 * calculate the size.
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public long getAttachmentSize(int index) {
+		return this.attachments.get(index).getSize();
+	}
+
+	/**
+	 * Gets the title of an attachment by its position.
+	 * 
+	 * The flag withSize controls whether the attachment size will be calculated or not. Attachment sizes require
+	 * the attachment to be read in full.
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public String getAttachmentTitle(int index) {
+		return this.attachments.get(index).getTitle(true);
+	}
+	
+	/**
+	 * @return the attachment titles
+	 */
+	public String[] getAttachmentTitles() {
+		String[] titles = new String[this.attachments.size()];
+
+		for (int index = 0; index < titles.length; index++) {
+			titles[index] = getAttachmentTitle(index);
+		}
+
+		return titles;
 	}
 }

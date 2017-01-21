@@ -13,9 +13,11 @@ import java.net.UnknownHostException;
 import org.apache.commons.lang.StringUtils;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.Dispatcher;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.IMvcResult;
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.MvcResultTypes;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.action.ActionResult;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.controller.ActionResultHandler;
-import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.ResourceResult;
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.BundledResourceResult;
+import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,13 +145,24 @@ public class HttpServer extends NanoHTTPD {
 		}
 
 		if (result instanceof ActionResult) {
-			ActionResultHandler resultHandler = new ActionResultHandler((ActionResult) result);
+			ActionResult actionResult = (ActionResult) result;
 
-			return NanoHTTPD.newFixedLengthResponse(status, mimeType, resultHandler.render());
-		} else if (result instanceof ResourceResult) {
-			ResourceResult resource = (ResourceResult) result;
+			if (actionResult.getType() == MvcResultTypes.VIEW) {
+				ActionResultHandler resultHandler = new ActionResultHandler(actionResult);
 
-			InputStream inputStream = resource.getAsStream();
+				return NanoHTTPD.newFixedLengthResponse(status, mimeType, resultHandler.render());
+			} else if (actionResult.getType() == MvcResultTypes.RESOURCE) {
+				Resource resource = actionResult.getResource();
+
+				return NanoHTTPD.newFixedLengthResponse(status, resource.getMime(), resource.getInputStream(), -1);
+			} else {
+				throw new RuntimeException("Invalid result type " + actionResult.getType());
+			}
+		} else if (result instanceof BundledResourceResult) {
+			BundledResourceResult resourceResult = (BundledResourceResult) result;
+
+			Resource resource = resourceResult.getResource();
+			InputStream inputStream = resourceResult.getAsStream();
 			return NanoHTTPD.newFixedLengthResponse(status, resource.getMime(), inputStream, -1);
 		} else {
 			throw new RuntimeException("Invalid result class " + result.getClass().getSimpleName());

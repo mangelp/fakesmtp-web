@@ -2,23 +2,37 @@
 
 <div class="row" id="$id">
 	<div class="col-sm-12">
-		<h2>${mail.Subject}</h2>
-		<h3>Addresses: </h3>
-		<dl>
-			<dt>From: </dt><dd>${mail.getFrom()}</dd>
-			<dt>Reply-TO: </dt><dd>${mail.getReplyTo()}</dd>
-			<dt>To: </dt><dd>${mail.getEmailAddressesAsString("to")}</dd>
-			<dt>CC: </dt><dd>${mail.getEmailAddressesAsString("cc")}</dd>
-			<dt>BCC: </dt><dd>${mail.getEmailAddressesAsString("bcc")}</dd>
-		</dl>
-		<h3>Content: </h3>
-		<pre>${mail.getContent()}</pre>
-		<h3>Attachments: </h3>
-		<ul>
-		#foreach($attachment in $mail.Attachments)
-			<li>$attachment</li>
-		#end
-		</ul>
+		<section>
+			<h2>${mail.Subject}</h2>
+			<section>
+				<h3>Addresses: </h3>
+				<dl>
+					<dt>From: </dt><dd>${mail.getFrom()}</dd>
+					<dt>Reply-TO: </dt><dd>${mail.getReplyTo()}</dd>
+					<dt>To: </dt><dd>${mail.getEmailAddressesAsString("to")}</dd>
+					<dt>CC: </dt><dd>${mail.getEmailAddressesAsString("cc")}</dd>
+					<dt>BCC: </dt><dd>${mail.getEmailAddressesAsString("bcc")}</dd>
+				</dl>
+			</section>
+			<section>
+				<h3>Content: </h3>
+				<pre>${mail.getContent()}</pre>
+			</section>
+			<section>
+				<h3>Attachments: </h3>
+				<p>
+					#if($mail.Attachments.Size > 0)
+						<ul>
+						#foreach($attachment in $mail.Attachments)
+							<li><a href="/default/download/$id/attachmentId/${attachment.Id}">$attachment.Title</a></li>
+						#end
+						</ul>
+					#else
+						There are no attachments in this mail
+					#end
+				</p>
+			</section>
+		</section>
 	</div>
 </div>
 <div class="row">

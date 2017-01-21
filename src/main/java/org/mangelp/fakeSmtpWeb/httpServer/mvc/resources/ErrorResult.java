@@ -5,38 +5,11 @@
  */
 package org.mangelp.fakeSmtpWeb.httpServer.mvc.resources;
 
+import org.mangelp.fakeSmtpWeb.httpServer.AbstractResult;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.IMvcResult;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.MvcErrors;
 
-public class ErrorResult implements IMvcResult {
-
-	private MvcErrors error;
-	private String errorMsg;
-	private boolean success;
-
-	public boolean isSuccess() {
-		return this.success;
-	}
-
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
-
-	public MvcErrors getError() {
-		return this.error;
-	}
-
-	public void setError(MvcErrors error) {
-		this.error = error;
-	}
-
-	public String getErrorMsg() {
-		return this.errorMsg;
-	}
-
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
-	}
+public class ErrorResult extends AbstractResult implements IMvcResult {
 
 	public ErrorResult(MvcErrors error, String errorMsg) {
 		this.setError(error);

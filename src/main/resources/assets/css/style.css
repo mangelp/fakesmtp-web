@@ -32,3 +32,11 @@
 	content: "";
 	margin: 0;
 }
+
+span.mail-body-excerpt {
+	font-size: 0.9em;
+	color: #1a1b1c;
+	line-height: 1em;
+	display: inline-block;
+	overflow: hidden;
+}
