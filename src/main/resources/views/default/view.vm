@@ -4,23 +4,23 @@
 	<div class="col-sm-12">
 		<section>
 			<h2>${mail.Subject}</h2>
-			<section>
+			<section class="sub-section">
 				<h3>Addresses: </h3>
-				<dl>
-					<dt>From: </dt><dd>${mail.getFrom()}</dd>
-					<dt>Reply-TO: </dt><dd>${mail.getReplyTo()}</dd>
+				<dl class="content">
+					<dt>From: </dt><dd>${mail.From}</dd>
+					<dt>Reply-TO: </dt><dd>${mail.ReplyTo}</dd>
 					<dt>To: </dt><dd>${mail.getEmailAddressesAsString("to")}</dd>
 					<dt>CC: </dt><dd>${mail.getEmailAddressesAsString("cc")}</dd>
 					<dt>BCC: </dt><dd>${mail.getEmailAddressesAsString("bcc")}</dd>
 				</dl>
 			</section>
-			<section>
+			<section class="sub-section">
 				<h3>Content: </h3>
-				<pre>${mail.getContent()}</pre>
+				<pre class="content">${mail.Content}</pre>
 			</section>
-			<section>
+			<section class="sub-section">
 				<h3>Attachments: </h3>
-				<p>
+				<p class="content">
 					#if($mail.Attachments.Size > 0)
 						<ul>
 						#foreach($attachment in $mail.Attachments)
@@ -37,7 +37,12 @@
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<a href="/">Back</a>
+		<p>&nbsp;</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<p><a href="/">Back</a></p>
 	</div>
 </div>
 

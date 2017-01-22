@@ -13,8 +13,7 @@
 						<table class="table">
 							<thead>
 								<th>File</th>
-								<th>Fecha</th>
-								<th>Tamaño</th>
+								<th>Date</th>
 								<th>Subject</th>
 								<th>From</th>
 								<th>Addresses</th>
@@ -26,18 +25,24 @@
 								<tr>
 									<td>${mail.File.Name}</td>
 									<td>${mail.getCreationDate("yyyy/MM/dd HH:mm:ss")}</td>
-									<td>${mail.getSize("k")}</td>
 									<td>${mail.Subject}</td>
-									<td>${mail.From}</td>
+									<td>${mail.From}#if("$mail.ReplyTo" != ""), $mail.ReplyTo#end</td>
 									<td>
-										<ul>
-											<li><strong>TO</strong><span>${mail.getEmailAddressesAsString("to")}</span></li>
-											<li><strong>CC</strong><span>${mail.getEmailAddressesAsString("cc")}</span></li>
-											<li><strong>BCC</strong><span>${mail.getEmailAddressesAsString("bcc")}</span></li>
+									#set($to=$mail.getEmailAddressesAsString("to"))
+									#set($cc=$mail.getEmailAddressesAsString("cc"))
+									#set($bcc=$mail.getEmailAddressesAsString("bcc"))
+										<ul class="address-list">
+											#if("$!to" != "")<li><strong>TO</strong> <span>$to</span></li>#end
+											#if("$!cc" != "")<li><strong>CC</strong> <span>$cc</span></li>#end
+											#if("$!bcc" != "")<li><strong>BCC</strong> <span>$bcc</span></li>#end
 										</ul>
 									</td>
-									<td><span class="mail-body-excerpt">${mail.getExcerpt(180)}</span></td>
-									<td><a href="/default/view/${mail.FileName}">Ver</a></td>
+									<td><span class="mail-body-excerpt">${mail.getExcerpt(120)}</span></td>
+									<td>
+										<ul class="actions">
+											<li><a href="/default/view/${mail.FileName}">View</a></li>
+										</ul>
+									</td>
 								</tr>
 							#end
 							<tbody>

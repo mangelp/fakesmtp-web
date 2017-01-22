@@ -1,3 +1,51 @@
+body, p {
+	font-size: 14px;
+}
+
+dd {
+	margin-left: 1em;
+}
+
+section > .content {
+	margin-left: 1em;
+}
+
+section.sub-section {
+	 margin-left: 1em;
+}
+
+h3, .h3 {
+	padding: 4px 8px 4px 2px;
+	border-bottom: solid 3px;
+}
+
+.jumbotron {
+	padding-top: 32px;
+	padding-bottom: 32px;
+	margin-bottom: 16px;
+}
+
+.jumbotron > h1 {
+	font-size: 54px;
+}
+
+ul.address-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.mail-body-excerpt {
+	font-size: 12px;
+	font-style: italic;
+}
+
+ul.actions {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 .header {
 	border-top: 1px solid #cfcfcf;
 }
@@ -31,12 +79,4 @@
 .footer ul.references li:first-child > *:before {
 	content: "";
 	margin: 0;
-}
-
-span.mail-body-excerpt {
-	font-size: 0.9em;
-	color: #1a1b1c;
-	line-height: 1em;
-	display: inline-block;
-	overflow: hidden;
 }

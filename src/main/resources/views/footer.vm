@@ -3,9 +3,7 @@
 		<div class="footer">
 			<p>FakeSmtpWeb is licensed under <a href="https://mozilla.org/MPL/2.0/" target="_blank">Mozilla Public License, v. 2.0</a> and uses FakeSMTP as fake mail server and NanoHTTPD to provide the web interface.</p>
 			<ul class="references">
-				<li><a target="_blank" href="https://github.com/mangelp/fakeSmtpWeb/">FakeSMTP WEB interface project</a></li>
-				<li><a target="_blank" href="https://nilhcem.github.io/FakeSMTP/">FakeSMTP project</a></li>
-				<li><a target="_blank" href="https://github.com/NanoHttpd/nanohttpd">NanoHTTPD project</a></li>
+				<li><a target="_blank" href="https://github.com/mangelp/fakeSmtp-web/">FakeSMTP Web interface</a></li>
 			</ul>
 		</div>
 		<script type="text/javascript" src="/res/jquery.js"></script>
