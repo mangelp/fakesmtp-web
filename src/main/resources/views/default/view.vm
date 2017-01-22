@@ -4,7 +4,15 @@
 	<div class="col-sm-12">
 		<section>
 			<h2>${mail.Subject}</h2>
-			<p style="text-align:righ"><ul class="actions"><li><a href="/default/download/$mail.FileName/$mail.File.Name" target="_blank">View raw message</a></li></ul></p>
+			<p style="text-align:righ"><ul class="actions">
+				<li><a href="/default/download/$mail.FileName/$mail.File.Name" target="_blank">View raw message</a></li>
+				#if($mail.hasHtmlContent())
+				<li><a href="/default/download/$mail.FileName/format/html/content.html" target="_blank">View HTML message</a></li>
+				#end
+				#if($mail.hasPlainContent())
+				<li><a href="/default/download/$mail.FileName/format/plain/content.html" target="_blank">View PLAIN message</a></li>
+				#end
+			</ul></p>
 			<section class="sub-section">
 				<h3>Addresses: </h3>
 				<dl class="content">

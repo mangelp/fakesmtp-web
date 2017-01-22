@@ -5,9 +5,11 @@
  */
 package org.mangelp.fakeSmtpWeb.httpServer.mvc.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang.StringUtils;
@@ -92,6 +94,8 @@ public class DefaultActionHandler extends AbstractActionHandler {
 
 		String id = input.getParam("id");
 		String attachmentId = input.getParam("attachmentId");
+		boolean isHtmlFormat = StringUtils.equalsIgnoreCase("html", input.getParam("format"));
+		boolean isPlainFormat = StringUtils.equalsIgnoreCase("plain", input.getParam("format"));
 
 		if (StringUtils.isBlank(id) && StringUtils.isBlank(attachmentId)) {
 			result.setError(MvcErrors.INVALID_PARAMS);
@@ -99,10 +103,26 @@ public class DefaultActionHandler extends AbstractActionHandler {
 		} else if (StringUtils.isBlank(attachmentId)) {
 			MailFile mail = mailBrowser.getMail(id);
 			try {
-				InputStream in = new FileInputStream(mail.getFile());
-
-				result.setResource(new Resource("text/plain", in));
-				result.setType(MvcResultTypes.RESOURCE);
+				InputStream in = null; 
+				
+				if (isHtmlFormat) {
+					in = new ByteArrayInputStream(mail.getHtmlContent().getBytes(StandardCharsets.UTF_8));
+					
+					result.setResource(new Resource("text/html", in));
+					result.setType(MvcResultTypes.RESOURCE);
+				} else if (isPlainFormat) {
+					result.setType(MvcResultTypes.RESOURCE);
+					in = new ByteArrayInputStream(mail.getPlainContent().getBytes(StandardCharsets.UTF_8));
+	
+					result.setResource(new Resource("text/plain", in));
+					result.setType(MvcResultTypes.RESOURCE);
+				} else {
+					result.setType(MvcResultTypes.RESOURCE);
+					in = new FileInputStream(mail.getFile());
+	
+					result.setResource(new Resource("text/plain", in));
+					result.setType(MvcResultTypes.RESOURCE);
+				}
 			} catch (Throwable t) {
 				logger.error("Failed to open mail file " + mail.getFile(), t);
 				result.setError(MvcErrors.INVALID_PARAMS);

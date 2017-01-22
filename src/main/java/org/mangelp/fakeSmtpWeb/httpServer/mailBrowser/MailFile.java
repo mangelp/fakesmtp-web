@@ -451,6 +451,14 @@ public class MailFile {
 
 		return content;
 	}
+	
+	public boolean hasHtmlContent() {
+		return !StringUtils.isBlank(this.getHtmlContent());
+	}
+	
+	public boolean hasPlainContent() {
+		return !StringUtils.isBlank(this.getPlainContent());
+	}
 
 	/**
 	 * Returns the content but reduced to a maximum of size-4 characters.
