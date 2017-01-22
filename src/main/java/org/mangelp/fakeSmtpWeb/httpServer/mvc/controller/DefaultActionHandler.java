@@ -5,6 +5,9 @@
  */
 package org.mangelp.fakeSmtpWeb.httpServer.mvc.controller;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang.StringUtils;
@@ -17,8 +20,13 @@ import org.mangelp.fakeSmtpWeb.httpServer.mvc.MvcResultTypes;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.action.ActionInput;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.action.ActionResult;
 import org.mangelp.fakeSmtpWeb.httpServer.mvc.resources.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultActionHandler extends AbstractActionHandler {
+
+	private static final Logger logger = LoggerFactory.getLogger(DefaultActionHandler.class);
+
 	public DefaultActionHandler() {
 		super("default");
 	}
@@ -30,11 +38,11 @@ public class DefaultActionHandler extends AbstractActionHandler {
 		if (subPath == null || subPath.length == 0) {
 			return;
 		}
-		
-		// Process subpaths to extract args from it. 
+
+		// Process subpaths to extract args from it.
 		// IE: /default/view/12i218/name/bleh extracts:
-		//   id => 12i218
-		//   name => bleh
+		// id => 12i218
+		// name => bleh
 
 		input.setParam("id", subPath[0]);
 
@@ -77,7 +85,7 @@ public class DefaultActionHandler extends AbstractActionHandler {
 
 		result.setViewName("list");
 	}
-	
+
 	public void doDownloadAction(ActionInput input, ActionResult result) {
 		String mailFolder = FakeSmtpWeb.getConfig().getMailFolder();
 		MailBrowser mailBrowser = new MailBrowser(mailFolder);
@@ -85,17 +93,28 @@ public class DefaultActionHandler extends AbstractActionHandler {
 		String id = input.getParam("id");
 		String attachmentId = input.getParam("attachmentId");
 
-		if (StringUtils.isBlank(id) || StringUtils.isBlank(attachmentId)) {
+		if (StringUtils.isBlank(id) && StringUtils.isBlank(attachmentId)) {
 			result.setError(MvcErrors.INVALID_PARAMS);
 			result.setErrorMsg("Invalid parameters");
-			return;
+		} else if (StringUtils.isBlank(attachmentId)) {
+			MailFile mail = mailBrowser.getMail(id);
+			try {
+				InputStream in = new FileInputStream(mail.getFile());
+
+				result.setResource(new Resource("text/plain", in));
+				result.setType(MvcResultTypes.RESOURCE);
+			} catch (Throwable t) {
+				logger.error("Failed to open mail file " + mail.getFile(), t);
+				result.setError(MvcErrors.INVALID_PARAMS);
+				result.setErrorMsg("Invalid parameters");
+			}
+		} else {
+			MailFile mail = mailBrowser.getMail(id);
+			int index = Integer.parseInt(attachmentId);
+			MailAttachment attachment = mail.getAttachments().get(index);
+
+			result.setResource(new Resource(attachment.getContentType(), attachment.getInputStream()));
+			result.setType(MvcResultTypes.RESOURCE);
 		}
-		
-		MailFile mail = mailBrowser.getMail(id);
-		int index = Integer.parseInt(attachmentId);
-		MailAttachment attachment = mail.getAttachments().get(index);
-		
-		result.setResource(new Resource(attachment.getContentType(), attachment.getInputStream()));
-		result.setType(MvcResultTypes.RESOURCE);
 	}
 }

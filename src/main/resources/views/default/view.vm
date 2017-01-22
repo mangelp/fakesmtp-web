@@ -4,6 +4,7 @@
 	<div class="col-sm-12">
 		<section>
 			<h2>${mail.Subject}</h2>
+			<p style="text-align:righ"><ul class="actions"><li><a href="/default/download/$mail.FileName/$mail.File.Name" target="_blank">View raw message</a></li></ul></p>
 			<section class="sub-section">
 				<h3>Addresses: </h3>
 				<dl class="content">
@@ -42,7 +43,9 @@
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<p><a href="/">Back</a></p>
+		<ul class="actions">
+			<li><a href="/">Back</a></li>
+		</ul>
 	</div>
 </div>
 

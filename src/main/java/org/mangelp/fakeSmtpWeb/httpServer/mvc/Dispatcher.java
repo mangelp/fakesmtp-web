@@ -35,8 +35,15 @@ public class Dispatcher {
 	/**
 	 * Paths allowed to reach controller actions
 	 */
-	private static final String[] mvcPaths = new String[] { "/", "/default", "/default/default", "/default/list",
-			"/default/view", "/default/view/[a-zA-Z0-9/=_]+", };
+	private static final String[] mvcPaths = new String[] { 
+				"/", 
+				"/default", 
+				"/default/default", 
+				"/default/list",
+				"/default/view", 
+				"/default/view/[a-zA-Z0-9/=_]+", 
+				"/default/download/[a-zA-Z0-9/=_\\.]+", 
+			};
 
 	public IMvcResult dispatch(HttpGetRequest request) throws ActionHandlerException {
 

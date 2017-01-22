@@ -29,7 +29,6 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections.functors.WhileClosure;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.util.MimeMessageParser;

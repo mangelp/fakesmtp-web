@@ -41,6 +41,7 @@
 									<td>
 										<ul class="actions">
 											<li><a href="/default/view/${mail.FileName}">View</a></li>
+											<li><a href="/default/download/${mail.FileName}/${mail.File.Name}" target="_blank">Download</a></li>
 										</ul>
 									</td>
 								</tr>
