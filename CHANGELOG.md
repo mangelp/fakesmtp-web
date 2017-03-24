@@ -6,13 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+## 0.2.0 - 2017-03-24
+### Added
 - Raw mail file download
 - Attachment download
 
 ### Changed
 - Small visual tuning
-
-### Changed
 
 ## 0.1.0 - 2017-01-21
 ### Added
@@ -25,4 +28,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - FakeSMTP is used as the Fake SMTP server (hence the name of this project).
 - Simple MVC implementation that routes requests and dispatches static resources and actions.
 
-[Unreleased]: https://github.com/mangelp/fakeSmtp-web/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/mangelp/fakeSmtp-web/compare/0.2.0...HEAD
