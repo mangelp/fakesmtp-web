@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## 0.2.1 - 2017-03-24
+### Added
+- Bash shell script to run the jar
+- Added usage help
+
 ## 0.2.0 - 2017-03-24
 ### Added
 - Raw mail file download

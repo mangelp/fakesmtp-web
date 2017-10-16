@@ -28,7 +28,7 @@ public class FakeSmtpWeb {
 	 * for 1/3th of a second each time
 	 */
 	private static final int sleepTime = 333;
-	public static final String VERSION = "0.0.1";
+	public static final String VERSION = "0.2.1";
 
 	private static Config config;
 	private static boolean terminated = false;

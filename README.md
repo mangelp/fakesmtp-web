@@ -6,7 +6,26 @@ Integration of FakeSMTP with a simple built-in web-based interface.
 
 Download the sources and execute mvn clean package, then lauch the app using the jar with all the dependencies.
 
-Basic usage information is shown using the --help option.
+Basic usage information is shown using the --help option:
+
+```bash
+$ java -jar ./fakesmtp-web-0.2.1-jar-with-dependencies.jar --help
+```
+
+```bash
+FakeSmtpWeb v0.2.1, FakeSmtp integrated with HTTP Web UI
+Usage: The options available are:
+	[--help]
+	[--mailBindAddress value]
+	[--mailFolder value]
+	[--mailPort value]
+	[--version]
+	[--waitBeforeStart value]
+	[--webBindAddress value]
+	[--webPort value]
+
+FakeSmtpWeb integrates FakeSMTP fake mail server with an stand-alone HTTP server to provide a web interface to show sent emails in your browser.
+```
 
 # Dependencies
 
